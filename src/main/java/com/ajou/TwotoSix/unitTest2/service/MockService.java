@@ -10,15 +10,16 @@ public class MockService {
         this.mockRepository = mockRepository;
     }
 
+
+    public Student findBystudentId(String studentId){
+        Student student = mockRepository.findBystudentId(studentId);
+        return student;
+    }
+
     public float updateGPAByStudentId(String studentId, float updatedGPA) {
         Student student = findBystudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
-    }
-
-    public Student findBystudentId(String studentId) {
-        Student student = mockRepository.findByStudentId(studentId);
-        return student;
     }
   
     public Student addStudent(String name, String studentId, int currentSemester, String major, float GPA){
