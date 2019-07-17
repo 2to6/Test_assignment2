@@ -9,5 +9,8 @@ public class MockService {
         return addStudent;
     }
 
-
+    public boolean ScholarshipVaild(Student student){
+        if(student.getGPA() >= 3.5) return true;
+        return false;
+    }
 }
