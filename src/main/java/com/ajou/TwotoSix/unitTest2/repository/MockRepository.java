@@ -15,4 +15,7 @@ public interface MockRepository {
 
     boolean ScholarshipVaild(Student student);
 
+    Student findByName(String name);
+
+    void deleteStudent(Student deleteStudentName);
 }

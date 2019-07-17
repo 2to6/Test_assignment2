@@ -3,6 +3,9 @@ package com.ajou.TwotoSix.unitTest2.service;
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 import com.ajou.TwotoSix.unitTest2.repository.MockRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MockService {
     private final MockRepository mockRepository;
 
@@ -16,7 +19,7 @@ public class MockService {
         return student;
     }
 
-    public float updateGPAByStudentId(String studentId, float updatedGPA) {
+    public double updateGPAByStudentId(String studentId, float updatedGPA) {
         Student student = findBystudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
@@ -30,5 +33,22 @@ public class MockService {
     public boolean ScholarshipVaild(Student student){
         if(student.getGPA() >= 3.5) return true;
         return false;
+    }
+
+
+    public Student findByName(String name) {
+        Student studentName = mockRepository.findByName(name);
+        return studentName;
+    }
+
+    public void deleteStudent(String name) {
+        Student deleteStudentName = findByName(name);
+        mockRepository.deleteStudent(deleteStudentName);
+    }
+
+    public List<Student> searchStudentByName(List<Student> studentList, String filterByName) {
+        return studentList.stream()
+                .filter(student -> student.getName().equals(filterByName))
+                .collect(Collectors.toList());
     }
 }
