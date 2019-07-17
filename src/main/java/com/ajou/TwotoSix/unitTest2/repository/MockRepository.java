@@ -1,12 +1,18 @@
 package com.ajou.TwotoSix.unitTest2.repository;
 
+import com.ajou.TwotoSix.unitTest2.domain.Student;
 
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 
 public interface MockRepository {
 
 
-    Student findByName(String name);
+    Student findBystudentId(String studentId);
 
-    void deleteStudent(Student deleteStudentName);
+    float updateGPA(Student student, float updatedGPA);
+
+    Student findByStudentId(String studentId);
+
+    boolean ScholarshipVaild(Student student);
+
 }

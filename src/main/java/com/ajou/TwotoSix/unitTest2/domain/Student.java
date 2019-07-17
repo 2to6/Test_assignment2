@@ -14,5 +14,5 @@ public class Student {
     private String studentId;
     private int currentSemester;
     private String major;
-    private float GPA;
+    private double GPA;
 }
