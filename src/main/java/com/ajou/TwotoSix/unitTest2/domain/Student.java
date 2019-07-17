@@ -8,10 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Student {
-
     private String name;
     private String studentId;
     private int currentSemester;
     private String major;
-    private float GPA;
+    private double GPA;
 }
