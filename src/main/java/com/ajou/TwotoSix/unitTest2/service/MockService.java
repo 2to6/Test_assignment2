@@ -3,6 +3,7 @@ package com.ajou.TwotoSix.unitTest2.service;
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 import com.ajou.TwotoSix.unitTest2.repository.MockRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,14 @@ public class MockService {
         student.setGPA(updatedGPA);
         return student.getGPA();
     }
-  
+
+    //When() 2
+    public List<String> getList(String name, int age){
+        List<String> result = new ArrayList<>();
+        //do something code
+        return result;
+    }
+
     public Student addStudent(String name, String studentId, int currentSemester, String major, float GPA){
         Student addStudent = new Student(name, studentId, currentSemester, major, GPA);
         return addStudent;
