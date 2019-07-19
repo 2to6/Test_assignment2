@@ -20,13 +20,13 @@ public class MockService {
         return student;
     }
 
-    public double updateGPAByStudentId(String studentId, float updatedGPA) {
+    public double updateGPAByStudentId(String studentId, double updatedGPA) {
         Student student = findBystudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
     }
 
-    //When() 2
+    //When() example 2
     public List<String> getList(String name, int age){
         List<String> result = new ArrayList<>();
         //do something code
