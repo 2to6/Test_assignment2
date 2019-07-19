@@ -14,13 +14,13 @@ public class MockService {
     }
 
 
-    public Student findBystudentId(String studentId){
-        Student student = mockRepository.findBystudentId(studentId);
+    public Student findByStudentId(String studentId){
+        Student student = mockRepository.findByStudentId(studentId);
         return student;
     }
 
     public double updateGPAByStudentId(String studentId, float updatedGPA) {
-        Student student = findBystudentId(studentId);
+        Student student = findByStudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
     }
