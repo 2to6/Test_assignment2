@@ -71,6 +71,24 @@ public class MockServiceTest {
         mockService.findByStudentId("1234567891");
     }
 
+    @Test
+    public void findByStudentId_getter_테스트(){
+
+       Student student = mock(Student.class);
+
+        student.getStudentId();
+        student.getName();
+        student.getGPA();
+        student.getCurrentSemester();
+        student.getMajor();
+
+        verify(student, timeout(200).atLeastOnce()).getStudentId();
+        verify(student, timeout(200).atLeastOnce()).getName();
+        verify(student, timeout(200).atLeastOnce()).getGPA();
+        verify(student, timeout(200).atLeastOnce()).getCurrentSemester();
+        verify(student, timeout(200).atLeastOnce()).getMajor();
+
+    }
 
 
 
