@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -46,10 +47,19 @@ public class MockServiceTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void 학번_검색_시_빈값을_입력하면_익셉션_발생_테스트() {
+    public void 학번_검색_시_빈값을_입력하면_익셉션_발생_테스트() { //최진영
 
         when(mockService.findByStudentId(" ")).thenThrow(new IllegalArgumentException());
         mockService.findByStudentId(" ");
+    }
+
+    @Test
+    public void 학번으로_검색_시_해당_함수가_한_번_실행되면_패스(){ //최진영
+
+        when(mockService.findByStudentId("201620987")).thenReturn(new Student("최진영", "201620987", 5, "software", 4.5));
+        Student student= mockService.findByStudentId(anyString());
+        verify(mockRepository, times(1)).findByStudentId(anyString());
+
     }
 
 
