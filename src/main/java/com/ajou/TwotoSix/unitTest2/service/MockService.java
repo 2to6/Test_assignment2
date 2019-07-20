@@ -19,7 +19,7 @@ public class MockService {
         return student;
     }
 
-    public double updateGPAByStudentId(String studentId, float updatedGPA) {
+    public double updateGPAByStudentId(String studentId, double updatedGPA) {
         Student student = findBystudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
