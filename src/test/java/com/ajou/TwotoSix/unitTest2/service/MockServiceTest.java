@@ -29,7 +29,7 @@ public class MockServiceTest {
     private List<Student> students = new ArrayList<>();
 
     @Test
-    public void 학번으로_검색했을때_옳바른_학생정보를_리턴하는지_확인하는_테스트() { //최진영
+    public void 학번으로_검색했을때_올바른_학생정보를_리턴하는지_확인하는_테스트() { //최진영
         when(mockService.findByStudentId("201620987")).thenReturn(new Student("최진영", "201620987", 5, "software", 4.5));
 
         String mockName = mockService.findByStudentId("201620987").getName();
@@ -51,16 +51,27 @@ public class MockServiceTest {
 
         when(mockService.findByStudentId(" ")).thenThrow(new IllegalArgumentException());
         mockService.findByStudentId(" ");
+
     }
 
     @Test
-    public void 학번으로_검색_시_해당_함수가_한_번_실행되면_패스(){ //최진영
+    public void 학번으로_검색_시_해당_함수가_한_번_실행되면_패스() { //최진영
 
-        when(mockService.findByStudentId("201620987")).thenReturn(new Student("최진영", "201620987", 5, "software", 4.5));
-        Student student= mockService.findByStudentId(anyString());
+        when(mockService.findByStudentId(anyString())).thenReturn(new Student("최진영", "201620987", 5, "software", 4.5));
+        Student student = mockService.findByStudentId(anyString());
         verify(mockRepository, times(1)).findByStudentId(anyString());
 
     }
+
+    @Test(expected = RuntimeException.class)
+    public void 학번이_9자리가_아니면_익셉션_발생_테스트(){
+        when(mockService.findByStudentId("123456789")).thenReturn(anyObject());
+        when(mockService.findByStudentId("1234567891")).thenThrow(RuntimeException.class);
+        mockService.findByStudentId("123456789");
+        mockService.findByStudentId("1234567891");
+    }
+
+
 
 
 }
