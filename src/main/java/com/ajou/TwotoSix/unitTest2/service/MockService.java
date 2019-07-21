@@ -25,7 +25,7 @@ public class MockService {
         return student.getGPA();
     }
   
-    public Student addStudent(String name, String studentId, int currentSemester, String major, float GPA){
+    public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
         Student addStudent = new Student(name, studentId, currentSemester, major, GPA);
         return addStudent;
     }
