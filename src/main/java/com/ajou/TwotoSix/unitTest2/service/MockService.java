@@ -41,14 +41,10 @@ public class MockService {
         return studentName;
     }
 
-    public void deleteStudent(String name) {
-        Student deleteStudentName = findByName(name);
-        mockRepository.deleteStudent(deleteStudentName);
-    }
 
     public List<Student> searchStudentByName(List<Student> studentList, String filterByName) {
         return studentList.stream()
-                .filter(student -> student.getName().equals(filterByName))
+                .filter(student -> student.getName().contains(filterByName))
                 .collect(Collectors.toList());
     }
 }
