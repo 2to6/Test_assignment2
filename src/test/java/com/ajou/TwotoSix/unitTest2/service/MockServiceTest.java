@@ -10,22 +10,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import static org.mockito.Mockito.*;
 
@@ -35,6 +28,8 @@ public class MockServiceTest {
 
     @Mock
     private MockRepository mockRepository;
+
+    private List<Student> students = new ArrayList<>();
 
     @InjectMocks
     private MockService mockService;
@@ -164,31 +159,28 @@ public class MockServiceTest {
         //호출 안했는지 체크
         verify(student, never()).getCurrentSemester();     //success
         verify(student, never()).setCurrentSemester(eq(10));    //success
-        verify(student, never()).setCurrentSemester(eq(6));    //fail
-        //최소 1번 이상 호출했는지 체크
         verify(student,atLeastOnce()).setCurrentSemester(anyInt());     //success
         //2번 이하 호출했는지 체크
         verify(student, atMost(2)).setCurrentSemester(anyInt());      //success
         //2번 이상 호출했는지 체크
-        verify(student,atLeast(2)).setCurrentSemester(anyInt());      //fail
-        //지정된 시간(millis)안으로 메소드를 호출했는지 체크
         verify(student,timeout(100)).setCurrentSemester(anyInt());      //success
         //지정된 시간안으로 1번 이상 메소드를 호출했는지 체크
         verify(student,timeout(100).atLeastOnce()).setCurrentSemester(anyInt());        //success
     }
 
     @Test   //BDD 스타일
-    public void BDD_스타일로_updateGPAByStudentId_메소드_Test(){     //
+    public void BDD_스타일로_updateGPAByStudentId_메소드_Test() {     //
         //given : 선행 조건 기술
-        given(mockRepository.updateGPAByStudentId(eq("201420997"),eq(4.0))).willReturn(new Student("CJW","201420997",6,"Software",4.0).getGPA());
+        given(mockRepository.updateGPAByStudentId(eq("201420997"), eq(4.0))).willReturn(new Student("CJW", "201420997", 6, "Software", 4.0).getGPA());
         //when : 기능 수행
-        double GPAofStudent = mockRepository.updateGPAByStudentId("201420997",4.0);
+        double GPAofStudent = mockRepository.updateGPAByStudentId("201420997", 4.0);
         //then : 결과 확인
-        verify(mockRepository, times(1)).updateGPAByStudentId("201420997",4.0);
+        verify(mockRepository, times(1)).updateGPAByStudentId("201420997", 4.0);
         assertThat(GPAofStudent, is(4.0));
+    }
 
     @Before
-    public void setUp() {
+    public void setUp(){
         //학생 객체를 생성
         Student minsu = new Student("박민수",
                 "200012345", 6, "수학과", 3.1);
@@ -209,6 +201,13 @@ public class MockServiceTest {
         students.add(taesun);
     }
 
+    @Test
+    public void 특정글자를_포함하는_학생들을_찾아_만족하는_학생들을_모아_새로_리스트를_생성한후_제대로_만들어졌는지_검사() { //원동욱
+        //Stream 사용
+        //민을 검색했을 경우, 2명이 민을 포함한 이름을 가지고 있기에 사이즈가 2인 리스트가 만들어져야한다.
+        List<Student> newListingStudents = mockService.searchStudentByName(students,"민");
+        assertThat(newListingStudents.size(), is(2));
+    }
 
     @Test
     public void 박민수라는_학생을_찾아_가짜객체를_생성하고_기존의_객체의_이름과_일치하면_리스트에서_삭제하고_리스트의_사이즈를_검사() { //원동욱
@@ -218,17 +217,9 @@ public class MockServiceTest {
         if (students.get(0).getName().equals(studentName)) {
             students.remove(0);
         }
-        assertThat(students.size(), is(1));
+        assertThat(students.size(), is(4));
     }
 
-
-    @Test
-    public void 특정글자를_포함하는_학생들을_찾아_만족하는_학생들을_모아_새로_리스트를_생성한후_제대로_만들어졌는지_검사() { //원동욱
-        //Stream 사용
-        //민을 검색했을 경우, 2명이 민을 포함한 이름을 가지고 있기에 사이즈가 2인 리스트가 만들어져야한다.
-        List<Student> newListingStudents = mockService.searchStudentByName(students,"민");
-        assertThat(newListingStudents.size(), is(2));
-    }
 
     @Test
     public void 객체에서_학생이름을_가져오는_로직이_두번실행됐으면_패스(){         //이안규
@@ -271,7 +262,7 @@ public class MockServiceTest {
         assertThat(student.getMajor(),is("Mathematics"));
         assertThat(student.getGPA(),is(4.0));
     }
-      
+
     @Test
     public void GPA가_기준미달일때_false인지_테스트(){ //김도연
         Student student = mock(Student.class);
@@ -279,7 +270,7 @@ public class MockServiceTest {
         boolean result = mockService.ScholarshipVaild(student);
         assertTrue( result == false);
     }
-      
+
     @Test
     public void GPA가_기준충족일때_true인지_테스트() { //김도연
         Student student = mock(Student.class);

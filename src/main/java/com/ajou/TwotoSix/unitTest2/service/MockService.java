@@ -21,15 +21,14 @@ public class MockService {
     }
 
     public double updateGPAByStudentId(String studentId, double updatedGPA) {
-        Student student = findBystudentId(studentId);
-        student.setGPA(updatedGPA);
-        return student.getGPA();
-    }
-  
-    public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
         Student student = findByStudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
+    }
+
+    public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
+        Student addStudent = new Student(name,studentId,currentSemester,major,GPA);
+        return addStudent;
     }
 
     Student updateGPA(Student student, double updatedGPA){
