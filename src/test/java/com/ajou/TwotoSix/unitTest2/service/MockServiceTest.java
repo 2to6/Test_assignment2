@@ -287,7 +287,6 @@ public class MockServiceTest {
         //when 수행 - 장학금 기준 검사
         boolean result = mockService.ScholarshipVaild(student);
         //then 결과
-        verify(mockService,times(1)).updateGPA(any(), anyDouble());
         assertTrue(result == true);
     }
 }
