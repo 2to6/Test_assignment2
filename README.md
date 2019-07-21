@@ -12,15 +12,16 @@
 - Stream API
 
 ## 설명
-주제 - 학생정보검색 프로그램
+주제
+  - 학생정보검색 프로그램
 
 메소드
-  findByStudentId -> 학생번호로 학생의 정보를 찾는다.
-  updateGPAByStudentId -> 학생의 학점을 업데이트 하고 업데이트 된 학점을 반환한다.
-  addStudent -> 학생의 정보를 추가한다.
-  ScholarshipValid -> 학생의 장학 선정여부를 알려준다.
-  findByName -> 학생의이름으로 학생의 정보를 찾는다.
-  searchStudentByName -> 리스트에서 이름을 필터링한다.
+  - findByStudentId : 학생번호로 학생의 정보를 찾는다.
+  - updateGPAByStudentId : 학생의 학점을 업데이트 하고 업데이트 된 학점을 반환한다.
+  - addStudent : 학생의 정보를 추가한다.
+  - ScholarshipValid : 학생의 장학 선정여부를 알려준다.
+  - findByName : 학생의이름으로 학생의 정보를 찾는다.
+  - searchStudentByName : 리스트에서 이름을 필터링한다.
 
 각 테스트마다 어떤 사람이 코드를 작성해는지 주석으로 이름을 적어 처리함.
 
