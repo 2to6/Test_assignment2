@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,17 +42,18 @@ public class MockServiceTest {
         assertTrue(result == true);
     }
 
-
     @Test
-    public void GPA_업데이트후_결과반영이_잘되는지_테스트(){ //김도연
-        Student student = mock(Student.class);
-        student.setGPA(3.2);
-        student.setStudentId("201720711");
-        mockService.updateGPAByStudentId("201720711", 3.5);
-        verify(mockService, times(1)).updateGPAByStudentId(anyString(), anyDouble());
+    public void GPA_업데이트후_결과반영이_정상작동하는지_테스트(){ //김도연
+        Student student = mockService.addStudent("김도연","201720711",5,"Software", 3.2);
+        //given 선행조건 - GAP업데이트
+        given(mockRepository.updateGPAByStudentId("201720711",3.7)).willReturn(3.7);
+        //when 수행 - 장학금 기준 검사
         boolean result = mockService.ScholarshipVaild(student);
         System.out.println(result);
+        //then 결과
+        //verify(mockRepository, atLeast(1)).updateGPA(any(),anyDouble());
         //assertTrue(result == true);
+
     }
 
 

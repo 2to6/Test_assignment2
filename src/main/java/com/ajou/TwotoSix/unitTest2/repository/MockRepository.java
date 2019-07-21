@@ -9,7 +9,7 @@ public interface MockRepository {
 
     Student findBystudentId(String studentId);
 
-    double updateGPA(Student student, float updatedGPA);
+    double updateGPAByStudentId(String StudentId, double updatedGPA);
 
     Student findByStudentId(String studentId);
 
