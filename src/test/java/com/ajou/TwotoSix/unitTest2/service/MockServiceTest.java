@@ -3,20 +3,20 @@ package com.ajou.TwotoSix.unitTest2.service;
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 import com.ajou.TwotoSix.unitTest2.repository.MockRepository;
 
-
 import org.junit.Before;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
-
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -219,7 +219,6 @@ public class MockServiceTest {
         when(mockService.findByName("박민수")).thenReturn(new Student("박민수",
                 "200012345", 6, "수학과", 3.1));
         String studentName = mockService.findByName("박민수").getName();
-
         if (students.get(0).getName().equals(studentName)) {
             students.remove(0);
         }
@@ -229,10 +228,37 @@ public class MockServiceTest {
 
     @Test
     public void 특정글자를_포함하는_학생들을_찾아_만족하는_학생들을_모아_새로_리스트를_생성한후_제대로_만들어졌는지_검사() { //원동욱
-
         //Stream 사용
         //민을 검색했을 경우, 2명이 민을 포함한 이름을 가지고 있기에 사이즈가 2인 리스트가 만들어져야한다.
         List<Student> newListingStudents = mockService.searchStudentByName(students,"민");
         assertThat(newListingStudents.size(), is(2));
+    }
+      
+        @Test
+    public void GPA가_기준미달일때_false인지_테스트(){ //김도연
+        Student student = mock(Student.class);
+        when(student.getGPA()).thenReturn(3.49);
+        boolean result = mockService.ScholarshipVaild(student);
+        assertTrue( result == false);
+    }
+
+    @Test
+    public void GPA가_기준충족일때_true인지_테스트() { //김도연
+        Student student = mock(Student.class);
+        when(student.getGPA()).thenReturn(3.5);
+        boolean result = mockService.ScholarshipVaild(student);
+        assertTrue(result == true);
+    }
+
+    @Test
+    public void GPA_업데이트후_결과반영이_정상작동하는지_테스트(){ //김도연
+        Student student = mockService.addStudent("김도연","201720711",5,"Software", 3.2);
+        //given 선행조건 - GAP업데이트
+        student = mockService.updateGPA(student,3.7);
+        //when 수행 - 장학금 기준 검사
+        boolean result = mockService.ScholarshipVaild(student);
+        //then 결과
+        verify(mockService,times(1)).updateGPA(any(), anyDouble());
+        assertTrue(result == true);
     }
 }

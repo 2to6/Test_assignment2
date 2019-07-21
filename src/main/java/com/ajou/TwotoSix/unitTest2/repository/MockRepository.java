@@ -8,7 +8,9 @@ public interface MockRepository {
 
     Student findBystudentId(String studentId);
 
-    double updateGPAByStudentId(String StudentId, double updatedGPA);
+    double updateGPAByStudentId(String studentId, double updatedGPA);
+
+    Student updateGPA(Student student, double updatedGPA);
 
     Student findByStudentId(String studentId);
 
