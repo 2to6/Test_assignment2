@@ -2,6 +2,7 @@ package com.ajou.TwotoSix.unitTest2.service;
 
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 import com.ajou.TwotoSix.unitTest2.repository.MockRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,9 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -28,14 +32,12 @@ public class MockServiceTest {
     @InjectMocks
     private MockService mockService;
 
-    //mock()
     @Test
     public void mock메소드_사용했을때_notNull이면_pass(){     //최지원
         Student student = mock(Student.class);
         assertTrue( student != null);
     }
 
-    //@Mock
     @Mock
     Student student;
     @Test
@@ -45,7 +47,6 @@ public class MockServiceTest {
         assertTrue(student != null);
     }
 
-    //when()
     @Test
     public void when_thenReturn_사용_updateGPAByStudentId_실행했을때_4리턴하면_pass(){  //최지원
         mockService = mock(MockService.class);
@@ -53,7 +54,6 @@ public class MockServiceTest {
         assertTrue(mockService.updateGPAByStudentId(anyString(),anyDouble()) == 4.0);
     }
 
-    //when() 2nd
     @Test
     public void when_thenReturn_사용_List만들었을떄_getList하고_NotNull이면_pass(){    //최지원
         mockService = mock(MockService.class);
@@ -66,8 +66,6 @@ public class MockServiceTest {
         assertTrue(mockService.getList(anyString(),anyInt())!=null);
     }
 
-    //doThrow() : 예외 던지기
-    //eq() : 특정 값을 넣기
     @Test(expected = IllegalArgumentException.class)
     public void doThrow_사용했을떄_IllegalArgumentException_throw하면_pass(){  //최지원
         mockService = mock(MockService.class);
@@ -76,7 +74,6 @@ public class MockServiceTest {
         mockService.updateGPAByStudentId("201420997",4.4);
     }
 
-    //doNothing() : void로 선언된 메소드에 when()을 걸고 싶을 때 사용
     @Test
     public void doNothing_사용했을때_아무메소드도_실행안됐으면_pass(){   //최지원
         Student student = mock(Student.class);
@@ -86,8 +83,6 @@ public class MockServiceTest {
         System.out.println("GPA::"+student.getGPA());
     }
 
-    //verify() : 해당 구문이 호출 되었는지를 체크.
-    //단순한 호출뿐만 아니라 횟수나 타임아웃 시간까지 지정해서 체크 가능
     @Test
     public void verify사용하여_currentSemester관련_메소드들이_조건에맞게_실행되었으면_pass(){ //최지원
         Student student = mock(Student.class);
@@ -111,13 +106,8 @@ public class MockServiceTest {
         verify(student,timeout(100).atLeastOnce()).setCurrentSemester(anyInt());        //success
     }
 
-    //@InjectMocks: 클래스 내부에 다른 클래스를 포함하는 경우에 사용
-    //이 다른 클래스로 로직을 점검해야 한다면 외부에서 주입할 수 있는 setter 메소드나 생성자를 구현하지 않아도
-    //@InjectMocks annotations을 사용하여 @Mock이나 @Spy 어노테이션이 붙은 mock 객체를 자신의 멤버 클래스와 일치하여
-    //주입시킨다.
-
     @Test   //BDD 스타일
-    public void BDD_스타일로_updateGPAByStudentId_메소드_Test(){
+    public void BDD_스타일로_updateGPAByStudentId_메소드_Test(){     //
         //given : 선행 조건 기술
         given(mockRepository.updateGPAByStudentId(eq("201420997"),eq(4.0))).willReturn(new Student("CJW","201420997",6,"Software",4.0).getGPA());
         //when : 기능 수행
@@ -125,5 +115,49 @@ public class MockServiceTest {
         //then : 결과 확인
         verify(mockRepository, times(1)).updateGPAByStudentId("201420997",4.0);
         assertThat(GPAofStudent, is(4.0));
+
+    @Before
+    public void setUp() {
+        //학생 객체를 생성
+        Student minsu = new Student("박민수",
+                "200012345", 6, "수학과", 3.1);
+        Student jeongho = new Student("정종호",
+                "203045785", 7, "건축학과", 3.4);
+        Student minchul = new Student("김민철",
+                "213458121", 4, "물리학과", 2.9);
+        Student seongwon = new Student("서성원",
+                "201487531", 5, "국방디지털학과", 3.2);
+        Student taesun = new Student("전태선",
+                "215491531", 3, "사이버보안학과", 2.7);
+
+
+        students.add(minsu);
+        students.add(jeongho);
+        students.add(minchul);
+        students.add(seongwon);
+        students.add(taesun);
+    }
+
+
+    @Test
+    public void 박민수라는_학생을_찾아_가짜객체를_생성하고_기존의_객체의_이름과_일치하면_리스트에서_삭제하고_리스트의_사이즈를_검사() { //원동욱
+        when(mockService.findByName("박민수")).thenReturn(new Student("박민수",
+                "200012345", 6, "수학과", 3.1));
+        String studentName = mockService.findByName("박민수").getName();
+
+        if (students.get(0).getName().equals(studentName)) {
+            students.remove(0);
+        }
+        assertThat(students.size(), is(1));
+    }
+
+
+    @Test
+    public void 특정글자를_포함하는_학생들을_찾아_만족하는_학생들을_모아_새로_리스트를_생성한후_제대로_만들어졌는지_검사() { //원동욱
+
+        //Stream 사용
+        //민을 검색했을 경우, 2명이 민을 포함한 이름을 가지고 있기에 사이즈가 2인 리스트가 만들어져야한다.
+        List<Student> newListingStudents = mockService.searchStudentByName(students,"민");
+        assertThat(newListingStudents.size(), is(2));
     }
 }
