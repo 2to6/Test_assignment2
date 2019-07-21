@@ -15,12 +15,20 @@ public class MockService {
     }
 
 
-    public Student findBystudentId(String studentId){
-        Student student = mockRepository.findBystudentId(studentId);
+    public Student findByStudentId(String studentId){
+        Student student = mockRepository.findByStudentId(studentId);
         return student;
     }
 
     public double updateGPAByStudentId(String studentId, double updatedGPA) {
+
+        Student student = findByStudentId(studentId);
+        student.setGPA(updatedGPA);
+        return student.getGPA();
+    }
+  
+    public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
+      
         Student student = findBystudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
@@ -34,6 +42,7 @@ public class MockService {
     }
 
     public Student addStudent(String name, String studentId, int currentSemester, String major, float GPA){
+
         Student addStudent = new Student(name, studentId, currentSemester, major, GPA);
         return addStudent;
     }

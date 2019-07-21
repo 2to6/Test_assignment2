@@ -5,6 +5,7 @@ import com.ajou.TwotoSix.unitTest2.domain.Student;
 public interface MockRepository {
 
 
+
     Student findBystudentId(String studentId);
 
     double updateGPAByStudentId(String StudentId, double updatedGPA);
