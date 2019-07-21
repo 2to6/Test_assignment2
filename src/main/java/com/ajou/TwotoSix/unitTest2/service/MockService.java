@@ -21,6 +21,12 @@ public class MockService {
     }
 
     public double updateGPAByStudentId(String studentId, double updatedGPA) {
+        Student student = findBystudentId(studentId);
+        student.setGPA(updatedGPA);
+        return student.getGPA();
+    }
+  
+    public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
         Student student = findByStudentId(studentId);
         student.setGPA(updatedGPA);
         return student.getGPA();
@@ -36,11 +42,6 @@ public class MockService {
         List<String> result = new ArrayList<>();
         //do something code
         return result;
-    }
-
-    public Student addStudent(String name, String studentId, int currentSemester, String major, float GPA){
-        Student addStudent = new Student(name, studentId, currentSemester, major, GPA);
-        return addStudent;
     }
 
     public boolean ScholarshipVaild(Student student){
