@@ -31,7 +31,7 @@ public class MockServiceTest {
     private List<Student> students = new ArrayList<>();
 
     @Test
-    public void 객체에서_이름을_가져오는_로직이_두번실행됐으면_패스(){
+    public void 객체에서_학생이름을_가져오는_로직이_두번실행됐으면_패스(){
         Student student = mock(Student.class);
         student.getName();
         student.getName();
@@ -40,7 +40,7 @@ public class MockServiceTest {
 
 
     @Test
-    public void 이름으로_검색하면_학생정보를_리턴하고_1번이하로_호출되었는지_검증(){
+    public void 이름으로_검색하면_학생정보를_리턴하고_1번이하로_호출되었는지_검증하고_학생이름확인(){
         //given
         given(mockRepository.findByName("이안규")).willReturn(new Student("이안규","201421155",7,"Mathematics",3.6));
         //when
@@ -51,7 +51,7 @@ public class MockServiceTest {
     }
 
     @Test
-    public void 학생이_장학금을_받을수있는지_판단후_검증(){
+    public void 학생이_장학금을_받을수있는지_판단후_검증및확인(){
         Student student = mockService.addStudent("이안규","201421155",7,"Mathematics",4.0);
         //given
         given(mockRepository.ScholarshipVaild(student)).willReturn(true);
@@ -59,16 +59,17 @@ public class MockServiceTest {
         boolean scholashipValid = mockRepository.ScholarshipVaild(student);
         //then
         verify(mockRepository, atLeast(1)).ScholarshipVaild(any());
+        assertThat(scholashipValid,is(true));
     }
 
     @Test
-    public void 학점업데이트를했을때원하는값으로업데이트된값을반환하는지검증(){
-        //given
-        given(mockRepository.updateGPA("201421155",4.5)).willReturn(4.5);
-        //when
-        double modifiedGPA = mockRepository.updateGPA("201421155",4.5);
-        //then
-        verify(mockRepository, atLeast(1)).updateGPA(anyString(),anyDouble());
-        assertThat(modifiedGPA,is(4.5));
+    public void 학생정보를추가하고_원하던정보대로_추가되었는지확인(){
+        Student student = mockService.addStudent("이안규","201421155",7,"Mathematics",4.0);
+        assertThat(student.getName(),is("이안규"));
+        assertThat(student.getStudentId(),is("201421155"));
+        assertThat(student.getCurrentSemester(),is(7));
+        assertThat(student.getMajor(),is("Mathematics"));
+        assertThat(student.getGPA(),is(4.0));
+
     }
 }
