@@ -3,6 +3,7 @@ package com.ajou.TwotoSix.unitTest2.service;
 import com.ajou.TwotoSix.unitTest2.domain.Student;
 import com.ajou.TwotoSix.unitTest2.repository.MockRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,8 @@ public class MockService {
     }
 
 
-    public Student findBystudentId(String studentId){
-        Student student = mockRepository.findBystudentId(studentId);
+    public Student findByStudentId(String studentId){
+        Student student = mockRepository.findByStudentId(studentId);
         return student;
     }
 
@@ -26,8 +27,21 @@ public class MockService {
     }
   
     public Student addStudent(String name, String studentId, int currentSemester, String major, double GPA){
-        Student addStudent = new Student(name, studentId, currentSemester, major, GPA);
-        return addStudent;
+        Student student = findByStudentId(studentId);
+        student.setGPA(updatedGPA);
+        return student.getGPA();
+    }
+
+    Student updateGPA(Student student, double updatedGPA){
+        student.setGPA(updatedGPA);
+        return student;
+    }
+
+    //When() example 2
+    public List<String> getList(String name, int age){
+        List<String> result = new ArrayList<>();
+        //do something code
+        return result;
     }
 
     public boolean ScholarshipVaild(Student student){
@@ -41,14 +55,10 @@ public class MockService {
         return studentName;
     }
 
-    public void deleteStudent(String name) {
-        Student deleteStudentName = findByName(name);
-        mockRepository.deleteStudent(deleteStudentName);
-    }
 
     public List<Student> searchStudentByName(List<Student> studentList, String filterByName) {
         return studentList.stream()
-                .filter(student -> student.getName().equals(filterByName))
+                .filter(student -> student.getName().contains(filterByName))
                 .collect(Collectors.toList());
     }
 }
